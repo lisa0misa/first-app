@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sumikko Calendar 🍡☁️</title>
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- Sumikko Gurashi Character Images -->
+        <img src="./shirokuma.png" alt="Shirokuma" class="sumikko-mascot mascot-bottom-left">
+        <img src="./tokage.png" alt="Tokage" class="sumikko-mascot mascot-bottom-right">
+        <img src="./neko.png" alt="Neko" class="sumikko-mascot mascot-top-peek">
+
+        <header>
+            <div class="header-title">
+                <span id="monthYearDisplay">Month Year</span> 🍡
+            </div>
+            <div class="header-nav">
+                <button class="btn-nav" id="btnPrev">◀</button>
+                <button class="btn-today" id="btnToday">Today</button>
+                <button class="btn-nav" id="btnNext">▶</button>
+            </div>
+        </header>
+
+        <div class="calendar-weekdays">
+            <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div class="modal-overlay" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">🌟 Add New Event</h3>
+                <button class="close-btn" id="btnCloseModal">✖</button>
+            </div>
+
+            <form id="eventForm">
+                <input type="hidden" id="eventId">
+
+                <div class="form-group">
+                    <label for="eventTitle">Title</label>
+                    <input type="text" id="eventTitle" class="form-control" placeholder="Tea party with Shirokuma..." required>
+                </div>
+
+                <div class="form-group" style="display: flex; gap: 10px;">
+                    <div style="flex: 1;">
+                        <label for="eventDate">Date</label>
+                        <input type="date" id="eventDate" class="form-control" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label for="eventTime">Time (Optional)</label>
+                        <input type="time" id="eventTime" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="eventDesc">Description</label>
+                    <textarea id="eventDesc" class="form-control" placeholder="Bring tapioca pearls..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Tag Color</label>
+                    <div class="color-picker" id="colorPicker">
+                        <div class="color-option selected" data-color="var(--baby-blue)" style="background-color: var(--baby-blue);"></div>
+                        <div class="color-option" data-color="var(--blush-pink)" style="background-color: var(--blush-pink);"></div>
+                        <div class="color-option" data-color="var(--mint-green)" style="background-color: var(--mint-green);"></div>
+                        <div class="color-option" data-color="var(--butter-yellow)" style="background-color: var(--butter-yellow);"></div>
+                        <div class="color-option" data-color="var(--lavender)" style="background-color: var(--lavender);"></div>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-delete" id="btnDeleteEvent">Delete</button>
+                    <button type="submit" class="btn btn-save" id="btnSaveEvent">Save 🐾</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Link to external JS file -->
+    <script src="script.js"></script>
+</body>
+</html>

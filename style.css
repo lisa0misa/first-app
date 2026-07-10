@@ -1,0 +1,421 @@
+/* =========================================
+   Sumikko Gurashi Inspired Color Palette & CSS Variables
+   ========================================= */
+:root {
+    --bg-color: #FFF9F0;         /* Soft Cream Background */
+    --text-color: #6D5950;       /* Warm Dark Brown for text */
+    --text-light: #A38C82;       /* Lighter brown for secondary text */
+    --surface-color: #FFFFFF;    /* Pure white for containers */
+
+    /* Pastel Palette */
+    --mint-green: #D4F0E1;
+    --blush-pink: #FFE2E2;
+    --baby-blue: #D6E8EE;
+    --lavender: #E4D8F3;
+    --butter-yellow: #FFF3C7;
+
+    /* UI Elements */
+    --border-radius-lg: 24px;
+    --border-radius-md: 16px;
+    --border-radius-sm: 8px;
+    --shadow: 0 10px 25px rgba(109, 89, 80, 0.08);
+    --shadow-hover: 0 12px 30px rgba(109, 89, 80, 0.15);
+    --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* =========================================
+   Global Styles & Typography
+   ========================================= */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    /* Using standard rounded fallback fonts for zero external dependencies */
+    font-family: "Varela Round", "Nunito", "Quicksand", "Comic Sans MS", "Arial Rounded MT Bold", sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+    background-image: 
+        radial-gradient(var(--blush-pink) 2px, transparent 2px),
+        radial-gradient(var(--baby-blue) 2px, transparent 2px);
+    background-size: 40px 40px;
+    background-position: 0 0, 20px 20px;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: var(--text-color);
+    transition: var(--transition);
+}
+
+/* =========================================
+   Main App Layout
+   ========================================= */
+.app-container {
+    background-color: var(--surface-color);
+    width: 100%;
+    max-width: 1000px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow);
+    padding: 30px;
+    position: relative;
+    overflow: visible;
+}
+
+/* Cute Corner Decorations (CSS Only) */
+.app-container::before, .app-container::after {
+    content: "☁️";
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.8;
+    pointer-events: none;
+    z-index: 1;
+}
+.app-container::before { top: 15px; left: 20px; }
+.app-container::after { top: 15px; right: 20px; }
+
+/* =========================================
+   Header (Navigation & Title)
+   ========================================= */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding: 0 10px;
+    flex-wrap: wrap;
+    gap: 15px;
+    position: relative;
+    z-index: 2;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-nav, .btn-today {
+    background-color: var(--mint-green);
+    padding: 10px 18px;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.btn-nav:hover, .btn-today:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: var(--shadow);
+    background-color: #BBEBD1;
+}
+
+.btn-nav:active, .btn-today:active {
+    transform: scale(0.98);
+}
+
+/* =========================================
+   Calendar Grid
+   ========================================= */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    font-weight: bold;
+    color: var(--text-light);
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+/* Day Cells */
+.day {
+    background-color: var(--bg-color);
+    border-radius: var(--border-radius-md);
+    min-height: 110px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.day:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow);
+    border-color: var(--blush-pink);
+    z-index: 10;
+}
+
+.day-number {
+    font-weight: bold;
+    align-self: flex-end;
+    margin-bottom: 5px;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.day.overflow {
+    opacity: 0.4;
+    background-color: transparent;
+}
+
+.day.today .day-number {
+    background-color: var(--blush-pink);
+    color: var(--text-color);
+}
+
+.day.today {
+    background-color: #FFF2F2;
+    border: 2px dashed var(--blush-pink);
+}
+
+/* =========================================
+   Events inside Calendar
+   ========================================= */
+.events-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+    overflow-y: auto;
+    /* Hide scrollbar for cuteness but allow scroll */
+    scrollbar-width: none; 
+}
+.events-container::-webkit-scrollbar {
+    display: none;
+}
+
+.event-pill {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: var(--border-radius-sm);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    font-weight: bold;
+}
+
+.event-pill:hover {
+    transform: scale(1.05);
+}
+
+/* =========================================
+   Modal Form (Add/Edit Event)
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(109, 89, 80, 0.4);
+    backdrop-filter: blur(4px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    width: 100%;
+    max-width: 400px;
+    border-radius: var(--border-radius-lg);
+    padding: 30px;
+    box-shadow: var(--shadow-hover);
+    transform: translateY(30px) scale(0.95);
+    transition: var(--transition);
+    position: relative;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0) scale(1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.close-btn {
+    background: none;
+    font-size: 1.5rem;
+    color: var(--text-light);
+    line-height: 1;
+}
+.close-btn:hover {
+    color: var(--text-color);
+    transform: rotate(90deg);
+}
+
+/* Form Inputs */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid var(--bg-color);
+    border-radius: var(--border-radius-md);
+    font-family: inherit;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    transition: border-color 0.2s;
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--baby-blue);
+    background-color: var(--surface-color);
+}
+
+textarea.form-control {
+    resize: none;
+    height: 80px;
+}
+
+/* Color Picker Radios */
+.color-picker {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.color-option {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    transition: var(--transition);
+}
+.color-option.selected {
+    border-color: var(--text-color);
+    transform: scale(1.1);
+}
+
+/* Modal Buttons */
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: var(--border-radius-md);
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.btn-save { background-color: var(--baby-blue); }
+.btn-save:hover { background-color: #BBDDF0; }
+
+.btn-delete { background-color: var(--blush-pink); display: none; }
+.btn-delete:hover { background-color: #FFCACA; }
+
+/* =========================================
+   Sumikko Characters 
+   ========================================= */
+.sumikko-mascot {
+    position: absolute;
+    z-index: 10;
+    width: 85px; 
+    pointer-events: auto;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 5px 5px rgba(109, 89, 80, 0.15));
+}
+
+.sumikko-mascot:hover {
+    transform: scale(1.1) translateY(-5px);
+}
+
+/* Shirokuma shivering in the bottom left */
+.mascot-bottom-left {
+    bottom: -5px;
+    left: -5px;
+}
+
+/* Tokage hiding in the bottom right */
+.mascot-bottom-right {
+    bottom: -5px;
+    right: -5px;
+}
+
+/* Neko peeking over the top menu */
+.mascot-top-peek {
+    top: 5px;
+    left: 50%;
+    width: 100px;
+}
+
+/* =========================================
+   Responsive Design
+   ========================================= */
+@media (max-width: 768px) {
+    .app-container { padding: 15px; border-radius: 16px; }
+    .header-title { font-size: 1.5rem; }
+    .day { min-height: 80px; padding: 4px; }
+    .day-number { width: 22px; height: 22px; font-size: 0.8rem; }
+    .calendar-weekdays { font-size: 0.75rem; }
+    .event-pill { font-size: 0.65rem; padding: 2px 4px; }
+    .app-container::before, .app-container::after { display: none; }
+}
+
+@media (max-width: 480px) {
+    .header-nav { width: 100%; justify-content: space-between; }
+    .btn-nav, .btn-today { flex: 1; padding: 8px; font-size: 0.9rem; }
+    .calendar-grid { gap: 4px; }
+    .day { min-height: 70px; }
+}
